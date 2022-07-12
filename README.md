@@ -1,6 +1,6 @@
 # libNMEA0183
 
-gps message prase library, support:
+GPS message prase library, support GPS Message:
 
 - [x] RMC
 - [x] GSA
