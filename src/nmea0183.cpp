@@ -59,7 +59,7 @@ void NMEA0183::hex2ascii(uint8_t *ucp_hex, uint8_t *ucp_ascii, uint8_t len_asc)
 
 
 /* Check nmea frame xor. */
-int NMEA0183::check_xor(uint8_t *data_ptr, uint16_t length)
+int NMEA0183::check_xor(const uint8_t *data_ptr, uint16_t length)
 {
     int              ret = ERR_OK;
     
@@ -93,6 +93,7 @@ int NMEA0183::check_xor(uint8_t *data_ptr, uint16_t length)
 
     /* Compare xor code. */
     hex2ascii(&xor_sum, check_buf, 2);
+
     if(memcmp(&data_ptr[length - 4], check_buf, 2) == 0)
     {
         ret = ERR_OK;
@@ -104,7 +105,7 @@ ERR_EXIT:
 }
 
 /* Parse utc time in nmea frame. */
-int NMEA0183::parse_utc_time(uint8_t *start_ptr, uint8_t *end_ptr, nmea_utc_time_st_ptr utc_ptr)
+int NMEA0183::parse_utc_time(const uint8_t *start_ptr, const uint8_t *end_ptr, nmea_utc_time_st_ptr utc_ptr)
 {
     int             ret = ERR_OK;
     uint8_t tmp_buff[5] = { 0 };
@@ -167,7 +168,7 @@ ERR_EXIT:
 }
 
 /* Parse utc date in nmea frame. */
-int NMEA0183::parse_utc_date(uint8_t *start_ptr, uint8_t *end_ptr, nmea_utc_date_st_ptr utc_ptr)
+int NMEA0183::parse_utc_date(const uint8_t *start_ptr, const uint8_t *end_ptr, nmea_utc_date_st_ptr utc_ptr)
 {
     int             ret = ERR_OK;
     uint8_t tmp_buff[5] = { 0 };
@@ -207,7 +208,7 @@ ERR_EXIT:
 
 
 /* Parse latitude in nmea frame. */
-int NMEA0183::parse_latitude(uint8_t *start_ptr, uint8_t *end_ptr, double *latitude_ptr)
+int NMEA0183::parse_latitude(const uint8_t *start_ptr, const uint8_t *end_ptr, double *latitude_ptr)
 {
     int              ret = ERR_OK;
     uint8_t tmp_buff[15] = { 0 };
@@ -249,7 +250,7 @@ ERR_EXIT:
 }
 
 /* Parse latitude ns in nmea frame. */
-int NMEA0183::parse_latitude_ns(uint8_t *start_ptr, uint8_t *end_ptr, nmea_latitude_em *ns_ptr)
+int NMEA0183::parse_latitude_ns(const uint8_t *start_ptr, const uint8_t *end_ptr, nmea_latitude_em *ns_ptr)
 {
     int    ret = ERR_OK;
 
@@ -286,7 +287,7 @@ ERR_EXIT:
 
 
 /* Parse longitude in nmea frame. */
-int NMEA0183::parse_longitude(uint8_t *start_ptr, uint8_t *end_ptr, double *longitude_ptr)
+int NMEA0183::parse_longitude(const uint8_t *start_ptr, const uint8_t *end_ptr, double *longitude_ptr)
 {
     int              ret = ERR_OK;
     uint8_t tmp_buff[15] = { 0 };
@@ -329,7 +330,7 @@ ERR_EXIT:
 }
 
 /* Parse longitude ew in nmea frame. */
-int NMEA0183::parse_longitude_ew(uint8_t *start_ptr, uint8_t *end_ptr, nmea_longitude_em *ew_ptr)
+int NMEA0183::parse_longitude_ew(const uint8_t *start_ptr, const uint8_t *end_ptr, nmea_longitude_em *ew_ptr)
 {
     int   ret = ERR_OK;
 
@@ -365,7 +366,7 @@ ERR_EXIT:
 
 
 /* Parse quality in nmea frame. */
-int NMEA0183::parse_quality(uint8_t *start_ptr, uint8_t *end_ptr, nmea_gps_quality_em *quality_ptr)
+int NMEA0183::parse_quality(const uint8_t *start_ptr, const uint8_t *end_ptr, nmea_gps_quality_em *quality_ptr)
 {
     int   ret = ERR_OK;
 
@@ -410,7 +411,7 @@ ERR_EXIT:
 }
 
 /* Parse operation_mode in nmea frame. */
-int NMEA0183::parse_operation_mode(uint8_t *start_ptr, uint8_t *end_ptr, nmea_gps_opMode_em *opmode_ptr)
+int NMEA0183::parse_operation_mode(const uint8_t *start_ptr, const uint8_t *end_ptr, nmea_gps_opMode_em *opmode_ptr)
 {
     int   ret = ERR_OK;
 
@@ -444,7 +445,7 @@ ERR_EXIT:
 
 
 /* Parse navigation_mode in nmea frame. */
-int NMEA0183::parse_navigation_mode(uint8_t *start_ptr, uint8_t *end_ptr, nmea_gps_navMode_em *navmode_ptr)
+int NMEA0183::parse_navigation_mode(const uint8_t *start_ptr, const uint8_t *end_ptr, nmea_gps_navMode_em *navmode_ptr)
 {
     int   ret = ERR_OK;
 
@@ -480,7 +481,7 @@ ERR_EXIT:
 }
 
 /* Parse status in nmea frame. */
-int NMEA0183::parse_status(uint8_t *start_ptr, uint8_t *end_ptr, nmea_gps_status_em *status_ptr)
+int NMEA0183::parse_status(const uint8_t *start_ptr, const uint8_t *end_ptr, nmea_gps_status_em *status_ptr)
 {
     int   ret = ERR_OK;
 
@@ -513,7 +514,7 @@ ERR_EXIT:
 
 
 /* Parse position_mode in nmea frame. */
-int NMEA0183::parse_position_mode(uint8_t *start_ptr, uint8_t *end_ptr, nmea_gps_posMode_em *posmode_ptr)
+int NMEA0183::parse_position_mode(const uint8_t *start_ptr, const uint8_t *end_ptr, nmea_gps_posMode_em *posmode_ptr)
 {
     int   ret = ERR_OK;
 
@@ -558,7 +559,8 @@ ERR_EXIT:
 
 
 /* Parse navigation_status in nmea frame. */
-int NMEA0183::parse_navigation_status(uint8_t *start_ptr, uint8_t *end_ptr, nmea_gps_navStatus_em *navstatus_ptr)
+int NMEA0183::parse_navigation_status(const uint8_t *start_ptr, const uint8_t *end_ptr, 
+    nmea_gps_navStatus_em *navstatus_ptr)
 {
     int   ret = ERR_OK;
 
@@ -588,7 +590,7 @@ ERR_EXIT:
 
 
 /* Parse nmea frame: GxGSA. */
-int NMEA0183::parse_GxGSA(nmea_GxGSA_st_ptr gsa_ptr, uint8_t *data_ptr, uint16_t len)
+int NMEA0183::parse_GxGSA(nmea_GxGSA_st_ptr gsa_ptr, const uint8_t *data_ptr, uint16_t len)
 {
     int            ret = ERR_OK;
     int        fun_ret = ERR_OK;
@@ -761,7 +763,7 @@ ERR_EXIT:
 }
 
 /* Parse nmea frame: GxGGA. */
-int NMEA0183::parse_GxGGA(nmea_GxGGA_st_ptr gga_ptr, uint8_t *data_ptr, uint16_t len)
+int NMEA0183::parse_GxGGA(nmea_GxGGA_st_ptr gga_ptr, const uint8_t *data_ptr, uint16_t len)
 {
     int            ret = ERR_OK;
     int        fun_ret = ERR_OK;
@@ -928,7 +930,7 @@ ERR_EXIT:
 }
 
 
-int NMEA0183::parse_GxRMC(nmea_GxRMC_st_ptr rmc_ptr, uint8_t *data_ptr, uint16_t len)
+int NMEA0183::parse_GxRMC(nmea_GxRMC_st_ptr rmc_ptr, const uint8_t *data_ptr, uint16_t len)
 {
     int            ret = ERR_OK;
     int        fun_ret = ERR_OK;
@@ -1103,7 +1105,7 @@ para:type_ptr is return that we needed frame type,xxx_ptr is return data struct,
     data_ptr is data that needed to deal,length is the length of data 
 return:ERR_OK is successful, other value is failed
 ******************************************************************/
-int NMEA0183::parse(uint8_t *data_ptr, uint16_t length)
+int NMEA0183::parse(const uint8_t *data_ptr, uint16_t length)
 {
     int ret = ERR_OK;
 
@@ -1137,6 +1139,10 @@ int NMEA0183::parse(uint8_t *data_ptr, uint16_t length)
     {
         ret = parse_GxGGA(gga_ptr_.get(), data_ptr, length);
         frame_type_ = NMEA_FRAME_GGA;
+    }
+    else 
+    {
+        frame_type_ = NMEA_FRAME_UNKNOWN;
     }
 
 ERR_EXIT:

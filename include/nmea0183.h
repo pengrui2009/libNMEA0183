@@ -101,8 +101,8 @@ typedef enum _nmea_frametype_em
 {
     NMEA_FRAME_GGA = 0,
     NMEA_FRAME_GSA = 1,
-    NMEA_FRAME_RMC = 2
-    
+    NMEA_FRAME_RMC = 2,
+    NMEA_FRAME_UNKNOWN
 }nmea_frametype_em, * nmea_frametype_em_ptr;
 
 #define NMEA_FRAMETYPE_EM_LEN    (sizeof(nmea_frametype_em))
@@ -313,7 +313,7 @@ public:
     NMEA0183 &operator= (const NMEA0183 &) = delete;
     NMEA0183 &operator= (const NMEA0183 &&) = delete;
 
-    int parse(uint8_t *data_ptr, uint16_t data_len);
+    int parse(const uint8_t *data_ptr, uint16_t data_len);
     nmea_frametype_em get_frametype() const;
     std::shared_ptr<nmea_GxRMC_st> get_nmea_rmc_data() const;
     std::shared_ptr<nmea_GxGSA_st> get_nmea_gsa_data() const;
@@ -324,24 +324,35 @@ private:
     std::shared_ptr<nmea_GxGSA_st> gsa_ptr_;
     std::shared_ptr<nmea_GxGGA_st> gga_ptr_;
 
-    int check_xor(uint8_t *data_ptr, uint16_t length);
+    int check_xor(const uint8_t *data_ptr, uint16_t length);
     void hex2ascii(uint8_t *ucp_hex, uint8_t *ucp_ascii, uint8_t len_asc);
-    int parse_navigation_status(uint8_t *start_ptr, uint8_t *end_ptr, nmea_gps_navStatus_em *navstatus_ptr);
-    int parse_position_mode(uint8_t *start_ptr, uint8_t *end_ptr, nmea_gps_posMode_em *posmode_ptr);
-    int parse_status(uint8_t *start_ptr, uint8_t *end_ptr, nmea_gps_status_em *status_ptr);
-    int parse_navigation_mode(uint8_t *start_ptr, uint8_t *end_ptr, nmea_gps_navMode_em *navmode_ptr);
-    int parse_operation_mode(uint8_t *start_ptr, uint8_t *end_ptr, nmea_gps_opMode_em *opmode_ptr);
-    int parse_quality(uint8_t *start_ptr, uint8_t *end_ptr, nmea_gps_quality_em *quality_ptr);
-    int parse_longitude_ew(uint8_t *start_ptr, uint8_t *end_ptr, nmea_longitude_em *ew_ptr);
-    int parse_longitude(uint8_t *start_ptr, uint8_t *end_ptr, double *longitude_ptr);
-    int parse_latitude_ns(uint8_t *start_ptr, uint8_t *end_ptr, nmea_latitude_em *ns_ptr);
-    int parse_latitude(uint8_t *start_ptr, uint8_t *end_ptr, double *latitude_ptr);
-    int parse_utc_date(uint8_t *start_ptr, uint8_t *end_ptr, nmea_utc_date_st_ptr utc_ptr);
-    int parse_utc_time(uint8_t *start_ptr, uint8_t *end_ptr, nmea_utc_time_st_ptr utc_ptr);
+    int parse_navigation_status(const uint8_t *start_ptr, const uint8_t *end_ptr, 
+        nmea_gps_navStatus_em *navstatus_ptr);
+    int parse_position_mode(const uint8_t *start_ptr, const uint8_t *end_ptr, 
+        nmea_gps_posMode_em *posmode_ptr);
+    int parse_status(const uint8_t *start_ptr, const uint8_t *end_ptr, 
+        nmea_gps_status_em *status_ptr);
+    int parse_navigation_mode(const uint8_t *start_ptr, const uint8_t *end_ptr, 
+        nmea_gps_navMode_em *navmode_ptr);
+    int parse_operation_mode(const uint8_t *start_ptr, const uint8_t *end_ptr, 
+        nmea_gps_opMode_em *opmode_ptr);
+    int parse_quality(const uint8_t *start_ptr, const uint8_t *end_ptr, 
+        nmea_gps_quality_em *quality_ptr);
+    int parse_longitude_ew(const uint8_t *start_ptr, const uint8_t *end_ptr, 
+        nmea_longitude_em *ew_ptr);
+    int parse_longitude(const uint8_t *start_ptr, const uint8_t *end_ptr, 
+        double *longitude_ptr);
+    int parse_latitude_ns(const uint8_t *start_ptr, const uint8_t *end_ptr, 
+        nmea_latitude_em *ns_ptr);
+    int parse_latitude(const uint8_t *start_ptr, const uint8_t *end_ptr, double *latitude_ptr);
+    int parse_utc_date(const uint8_t *start_ptr, const uint8_t *end_ptr, 
+        nmea_utc_date_st_ptr utc_ptr);
+    int parse_utc_time(const uint8_t *start_ptr, const uint8_t *end_ptr, 
+        nmea_utc_time_st_ptr utc_ptr);
 
-    int parse_GxRMC(nmea_GxRMC_st_ptr rmc_ptr, uint8_t *data_ptr, uint16_t len);
-    int parse_GxGGA(nmea_GxGGA_st_ptr gga_ptr, uint8_t *data_ptr, uint16_t len);
-    int parse_GxGSA(nmea_GxGSA_st_ptr gsa_ptr, uint8_t *data_ptr, uint16_t len);
+    int parse_GxRMC(nmea_GxRMC_st_ptr rmc_ptr, const uint8_t *data_ptr, uint16_t len);
+    int parse_GxGGA(nmea_GxGGA_st_ptr gga_ptr, const uint8_t *data_ptr, uint16_t len);
+    int parse_GxGSA(nmea_GxGSA_st_ptr gsa_ptr, const uint8_t *data_ptr, uint16_t len);
 };
 
 } // namespace nmea
